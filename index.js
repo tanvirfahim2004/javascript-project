@@ -136,6 +136,51 @@ function searchAccount() {
 }
 
 
+// =============================
+// DEPOSIT MONEY
+// =============================
+
+function depositMoney() {
+
+    console.log("\n===== DEPOSIT MONEY =====");
+
+    rl.question("Enter account number: ", function(number) {
+
+        let accountNumber = Number(number);
+
+        let account = accounts.find(function(account) {
+            return account.accountNumber === accountNumber;
+        });
+
+        if (!account) {
+            console.log("Account not found.");
+            return mainMenu();
+        }
+
+        rl.question("Enter deposit amount: ", function(amount) {
+
+            let money = Number(amount);
+
+            if (isNaN(money) || money <= 0) {
+                console.log("Invalid amount.");
+                return mainMenu();
+            }
+
+            account.balance = account.balance + money;
+
+            account.transactions.push(
+                "Deposited: " + money
+            );
+
+            console.log("\nDeposit successful!");
+            console.log("New balance:", account.balance);
+
+            mainMenu();
+        });
+    });
+}
+
+
 
 
 // =============================
@@ -152,7 +197,8 @@ function mainMenu() {
     console.log("1. Create Account");
     console.log("2. View All Accounts");
     console.log("3. Search Account");
-   
+    console.log("4. Deposit Money");
+    
     console.log("9. Exit");
 
     console.log("==================================");
@@ -173,7 +219,11 @@ function mainMenu() {
                 searchAccount();
                 break;
 
-        
+            case "4":
+                depositMoney();
+                break;
+
+         
 
             case "9":
                 console.log("\nThank you for using the Bank Management System!");
