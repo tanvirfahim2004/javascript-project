@@ -349,6 +349,43 @@ function transactionHistory() {
 }
 
 // =============================
+// DELETE ACCOUNT
+// =============================
+
+function deleteAccount() {
+
+    console.log("\n===== DELETE ACCOUNT =====");
+
+    rl.question("Enter account number: ", function(number) {
+
+        let accountNumber = Number(number);
+
+        let index = accounts.findIndex(function(account) {
+            return account.accountNumber === accountNumber;
+        });
+
+        if (index === -1) {
+            console.log("Account not found.");
+            return mainMenu();
+        }
+
+        if (accounts[index].balance > 0) {
+            console.log(
+                "Cannot delete account because balance is not zero."
+            );
+
+            return mainMenu();
+        }
+
+        accounts.splice(index, 1);
+
+        console.log("Account deleted successfully.");
+
+        mainMenu();
+    });
+}
+
+// =============================
 // MAIN MENU
 // =============================
 
@@ -366,6 +403,7 @@ function mainMenu() {
     console.log("5. Withdraw Money");
    console.log("6. Transfer Money");
     console.log("7. Transaction History");
+    console.log("8. Delete Account");
     console.log("9. Exit");
 
     console.log("==================================");
@@ -399,7 +437,9 @@ function mainMenu() {
              case "7":
                 transactionHistory();
                 break;
-
+            case "8":
+                deleteAccount();
+                break;
             case "9":
                 console.log("\nThank you for using the Bank Management System!");
                 rl.close();
