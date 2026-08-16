@@ -101,6 +101,41 @@ function viewAccounts() {
 }
 
 
+// =============================
+// SEARCH ACCOUNT
+// =============================
+
+function searchAccount() {
+
+    console.log("\n===== SEARCH ACCOUNT =====");
+
+    rl.question("Enter account number: ", function(number) {
+
+        let accountNumber = Number(number);
+
+        let account = accounts.find(function(account) {
+            return account.accountNumber === accountNumber;
+        });
+
+        if (!account) {
+            console.log("Account not found.");
+            return mainMenu();
+        }
+
+        console.log("\nAccount found!");
+        console.log("----------------------------");
+        console.log("Account Number:", account.accountNumber);
+        console.log("Name:", account.name);
+        console.log("Age:", account.age);
+        console.log("Address:", account.address);
+        console.log("Balance:", account.balance);
+        console.log("----------------------------");
+
+        mainMenu();
+    });
+}
+
+
 
 
 // =============================
@@ -116,8 +151,9 @@ function mainMenu() {
 
     console.log("1. Create Account");
     console.log("2. View All Accounts");
-
-    console.log("3. Exit");
+    console.log("3. Search Account");
+   
+    console.log("9. Exit");
 
     console.log("==================================");
 
@@ -133,9 +169,13 @@ function mainMenu() {
                 viewAccounts();
                 break;
 
+            case "3":
+                searchAccount();
+                break;
+
         
 
-            case "3":
+            case "9":
                 console.log("\nThank you for using the Bank Management System!");
                 rl.close();
                 break;
