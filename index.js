@@ -231,6 +231,82 @@ function withdrawMoney() {
 }
 
 
+// =============================
+// TRANSFER MONEY
+// =============================
+
+function transferMoney() {
+
+    console.log("\n===== TRANSFER MONEY =====");
+
+    rl.question("Enter sender account number: ", function(senderNumber) {
+
+        let sender = accounts.find(function(account) {
+            return account.accountNumber === Number(senderNumber);
+        });
+
+        if (!sender) {
+            console.log("Sender account not found.");
+            return mainMenu();
+        }
+
+        rl.question("Enter receiver account number: ", function(receiverNumber) {
+
+            let receiver = accounts.find(function(account) {
+                return account.accountNumber === Number(receiverNumber);
+            });
+
+            if (!receiver) {
+                console.log("Receiver account not found.");
+                return mainMenu();
+            }
+
+            if (sender.accountNumber === receiver.accountNumber) {
+                console.log("Cannot transfer to the same account.");
+                return mainMenu();
+            }
+
+            rl.question("Enter transfer amount: ", function(amount) {
+
+                let money = Number(amount);
+
+                if (isNaN(money) || money <= 0) {
+                    console.log("Invalid amount.");
+                    return mainMenu();
+                }
+
+                if (money > sender.balance) {
+                    console.log("Insufficient balance.");
+                    return mainMenu();
+                }
+
+                sender.balance = sender.balance - money;
+                receiver.balance = receiver.balance + money;
+
+                sender.transactions.push(
+                    "Transferred " + money +
+                    " to account " + receiver.accountNumber
+                );
+
+                receiver.transactions.push(
+                    "Received " + money +
+                    " from account " + sender.accountNumber
+                );
+
+                console.log("\nTransfer successful!");
+
+                console.log(
+                    "Sender new balance:",
+                    sender.balance
+                );
+
+                mainMenu();
+            });
+        });
+    });
+}
+
+
 
 // =============================
 // MAIN MENU
@@ -248,7 +324,8 @@ function mainMenu() {
     console.log("3. Search Account");
     console.log("4. Deposit Money");
     console.log("5. Withdraw Money");
-   
+   console.log("6. Transfer Money");
+    
     console.log("9. Exit");
 
     console.log("==================================");
@@ -276,7 +353,9 @@ function mainMenu() {
             case "5":
                 withdrawMoney();
                 break;
-
+            case "6":
+                transferMoney();
+                break;
             case "9":
                 console.log("\nThank you for using the Bank Management System!");
                 rl.close();
