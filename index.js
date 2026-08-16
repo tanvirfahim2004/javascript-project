@@ -306,7 +306,47 @@ function transferMoney() {
     });
 }
 
+// =============================
+// TRANSACTION HISTORY
+// =============================
 
+function transactionHistory() {
+
+    console.log("\n===== TRANSACTION HISTORY =====");
+
+    rl.question("Enter account number: ", function(number) {
+
+        let accountNumber = Number(number);
+
+        let account = accounts.find(function(account) {
+            return account.accountNumber === accountNumber;
+        });
+
+        if (!account) {
+            console.log("Account not found.");
+            return mainMenu();
+        }
+
+        console.log("\nAccount:", account.accountNumber);
+        console.log("Name:", account.name);
+
+        console.log("\nTransactions:");
+
+        if (account.transactions.length === 0) {
+            console.log("No transactions.");
+        }
+
+        account.transactions.forEach(function(transaction, index) {
+
+            console.log(
+                (index + 1) + ". " + transaction
+            );
+
+        });
+
+        mainMenu();
+    });
+}
 
 // =============================
 // MAIN MENU
@@ -325,7 +365,7 @@ function mainMenu() {
     console.log("4. Deposit Money");
     console.log("5. Withdraw Money");
    console.log("6. Transfer Money");
-    
+    console.log("7. Transaction History");
     console.log("9. Exit");
 
     console.log("==================================");
@@ -356,6 +396,10 @@ function mainMenu() {
             case "6":
                 transferMoney();
                 break;
+             case "7":
+                transactionHistory();
+                break;
+
             case "9":
                 console.log("\nThank you for using the Bank Management System!");
                 rl.close();
